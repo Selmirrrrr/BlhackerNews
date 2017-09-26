@@ -6,13 +6,8 @@ branches:
 init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true
-  - cmd: dir
-  - cmd: cd .
-  - cmd: dir
-  - cmd: cd /..
-  - cmd: dir
-  - cmd: cd ./src
 before_build:
+  - cmd: cd ./src
   # Install node packages
   - cmd: npm install
 build_script:
