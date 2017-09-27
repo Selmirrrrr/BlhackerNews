@@ -26,9 +26,8 @@ build_script:
 after_build:
   # For once the build has completed
 artifacts:
-  - cmd: dir
-  - path: '.\release\'
-    name: WebSite
-    type: WebDeployPackage
+ - path: '.\release\'
+   name: WebSite
+   type: WebDeployPackage
 clone_depth: 1
 deploy: off
