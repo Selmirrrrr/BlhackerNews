@@ -1,8 +1,19 @@
 version: '1.0.{build}'
 image: Visual Studio 2017
+environment:
+  matrix:
+  # node.js
+    - nodejs_version: "6"
 branches:
   only:
   - master
+install:
+  # Get the latest stable version of Node 0.STABLE.latest
+  - ps: Install-Product node $env:nodejs_version
+  - IF %nodejs_version% LSS 4 npm -g install npm@2
+  - set PATH=%APPDATA%\npm;%PATH%
+  # Typical npm stuff.
+  - npm install
 init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true
