@@ -22,7 +22,6 @@ before_build:
 build_script:
   # output will be in ./src/bin/debug/netcoreapp1.1/publish
   - cmd: dotnet publish -c Release -o .\release\
-  - cmd: dir
 after_build:
   # For once the build has completed
 artifacts:
@@ -30,4 +29,15 @@ artifacts:
    name: WebSite
    type: WebDeployPackage
 clone_depth: 1
-deploy: off
+deploy:
+- provider: WebDeploy
+  server: blhackernews.scm.azurewebsites.net:443
+  website: http://blhackernews.azurewebsites.net
+  username:
+    secure: eJQDUj/eA9MKhOBa0cVT3w==
+  password:
+    secure: 9rjdN8KcWv2Qt8OVwUY4ndsFgZl2A7Ei/cCPrR2TNbsGsFfX7MBzpD/nroWQiTbW71qeHPgFHGRQSoChvB3sOA==
+  artifact: WebSite
+  aspnet_core: true
+  app_offline: true
+  aspnet_core_force_restart: true
