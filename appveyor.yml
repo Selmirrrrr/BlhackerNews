@@ -12,8 +12,6 @@ install:
   - ps: Install-Product node $env:nodejs_version
   - IF %nodejs_version% LSS 4 npm -g install npm@2
   - set PATH=%APPDATA%\npm;%PATH%
-  # Typical npm stuff.
-  - npm install
 init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true
@@ -24,11 +22,13 @@ before_build:
 build_script:
   # output will be in ./src/bin/debug/netcoreapp1.1/publish
   - cmd: dotnet publish -c Release -o .\release\
+  - cmd: dir
 after_build:
   # For once the build has completed
 artifacts:
- - path: '.\release\'
-   name: WebSite
-   type: WebDeployPackage
+  - cmd: dir
+  - path: '.\release\'
+    name: WebSite
+    type: WebDeployPackage
 clone_depth: 1
 deploy: off
