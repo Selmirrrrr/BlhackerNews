@@ -31,8 +31,9 @@ artifacts:
 clone_depth: 1
 deploy:
 - provider: WebDeploy
-  server: blhackernews.scm.azurewebsites.net:443
-  website: http://blhackernews.azurewebsites.net
+  server: https://blhackernews.scm.azurewebsites.net:443/msdeploy.axd?site=https://blhackernews.azurewebsites.net
+  website: https://blhackernews.azurewebsites.net
+  NTLM: disabled
   username:
     secure: eJQDUj/eA9MKhOBa0cVT3w==
   password:
