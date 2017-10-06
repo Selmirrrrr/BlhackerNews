@@ -36,10 +36,7 @@ namespace BlhackerNews
                     HotModuleReplacement = true
                 });
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+            else app.UseExceptionHandler("/Home/Error");
 
             app.UseStaticFiles();
 
