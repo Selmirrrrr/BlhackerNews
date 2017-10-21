@@ -4,6 +4,7 @@ namespace BlhackerNews
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using BlhackerNews.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -23,6 +24,7 @@ namespace BlhackerNews
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddTransient<NewsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,7 +35,7 @@ namespace BlhackerNews
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
-                    HotModuleReplacement = true
+                    HotModuleReplacement = false
                 });
             }
             else app.UseExceptionHandler("/Home/Error");

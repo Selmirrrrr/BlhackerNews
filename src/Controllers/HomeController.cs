@@ -5,13 +5,21 @@ namespace BlhackerNews.Controllers
     using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
+    using BlhackerNews.Services;
     using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private NewsService _newsService;
+
+        public HomeController(NewsService newsService)
         {
-            return View();
+            _newsService = newsService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            return Ok(_newsService.GetLastNews(10));
         }
 
         public IActionResult Error()
