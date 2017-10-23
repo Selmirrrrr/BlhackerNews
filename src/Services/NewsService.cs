@@ -17,7 +17,7 @@ namespace BlhackerNews.Services
             _client = new HttpClient();
         }
 
-        public async Task<List<long>> GedottLastNews(int nb)
+        public async Task<List<long>> GetLastNews(int nb)
         {
             using (var client = new HttpClient())
             {
