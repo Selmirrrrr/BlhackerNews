@@ -17,23 +17,15 @@ namespace BlhackerNews.Services
             _client = new HttpClient();
         }
 
-        public async Task GetLastNews(int nb)
+        public async Task<List<long>> GedottLastNews(int nb)
         {
             using (var client = new HttpClient())
             {
-                try
-                {   
-                    client.BaseAddress = new Uri("https://hacker-news.firebaseio.com/v0");
-                    var response = await client.GetAsync($"/topstories.json");
-                    response.EnsureSuccessStatusCode();
-                    Console.WriteLine(response.ToString());
-                    var stringResult = await response.Content.ReadAsStringAsync();
-                    var rawWeather = JsonConvert.DeserializeObject<List<long>>(stringResult);
-                }
-                catch (HttpRequestException httpRequestException)
-                {
-                    // return BadRequest($"Error getting weather from OpenWeather: {httpRequestException.Message}");
-                }
+                var response = await client.GetAsync("https://hacker-news.firebaseio.com/v0/topstories.json");
+                response.EnsureSuccessStatusCode();
+                Console.WriteLine(response.ToString());
+                var stringResult = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<List<long>>(stringResult);
             }
         }
 

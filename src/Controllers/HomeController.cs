@@ -19,7 +19,7 @@ namespace BlhackerNews.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return Ok(_newsService.GetLastNews(10));
+            return Ok(await _newsService.GetLastNews(10));
         }
 
         public IActionResult Error()
