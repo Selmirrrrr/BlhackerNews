@@ -11,13 +11,10 @@
             </thead>
             <tbody>
             <tr *ngFor="let news of _newsArray">
-                <a>
-                        <td>{{news.score}}</td>
-                        <td>{{news.title}}</td>
-                        <td>{{news.by}}</td>
-                        <td><a href="{{news.url}}">Click</a></td>
-                </a>
-
+                <td>{{news.score}}</td>
+                <td>{{news.title}}</td>
+                <td>{{news.by}}</td>
+                <td><a href="{{news.url}}">Click</a></td>
             </tr>
             </tbody>
         </table>
