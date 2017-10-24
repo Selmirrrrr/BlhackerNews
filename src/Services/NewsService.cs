@@ -8,32 +8,36 @@ namespace BlhackerNews.Services
     using System.Threading.Tasks;
     using System.Collections.Generic;
     using Newtonsoft.Json;
+    using System.Linq;
 
     public class NewsService
     {
-        private HttpClient _client;
+        private string _topNewsReq = "https://hacker-news.firebaseio.com/v0/topstories.json";
+        private string _newsDetailssReq = $"https://hacker-news.firebaseio.com/v0/item/";
 
-        public NewsService() 
+        private async Task<List<int>> GetLastNewsIds(int nb) 
+            => JsonConvert.DeserializeObject<List<int>>(await HackerNewsApiRequest(_topNewsReq)).Take(nb).ToList();
+
+        public async Task<List<NewsItem>> GetLastNews(int nb)
         {
-            _client = new HttpClient();
+            if (nb < 1) throw new ArgumentOutOfRangeException("Nb must be greater than 0");
+            if (nb > 500) throw new ArgumentOutOfRangeException("Nb must be lower than 501");
+            var list = await GetLastNewsIds(nb);
+            var tasks = list.Select(GetNewsItemDetails);
+            return Task.WhenAll(tasks).Result.ToList();
         }
 
-        public async Task<List<long>> GetLastNews(int nb)
+        public async Task<NewsItem> GetNewsItemDetails(int newsId) 
+            => JsonConvert.DeserializeObject<NewsItem>(await HackerNewsApiRequest(_newsDetailssReq + newsId + ".json"));
+
+        private async Task<string> HackerNewsApiRequest(string request)
         {
             using (var client = new HttpClient())
             {
-                var response = await client.GetAsync("https://hacker-news.firebaseio.com/v0/topstories.json");
+                var response = await client.GetAsync(request);
                 response.EnsureSuccessStatusCode();
-                Console.WriteLine(response.ToString());
-                var stringResult = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<List<long>>(stringResult);
+                return await response.Content.ReadAsStringAsync();
             }
         }
-
-        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
-        {
-            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-            DateParseHandling = DateParseHandling.None,
-        };
     }
 }
