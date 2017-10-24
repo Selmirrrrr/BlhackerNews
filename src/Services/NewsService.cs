@@ -13,7 +13,8 @@ namespace BlhackerNews.Services
     {
         private HttpClient _client;
 
-        public NewsService() {
+        public NewsService() 
+        {
             _client = new HttpClient();
         }
 
