@@ -10,17 +10,7 @@ namespace BlhackerNews.Controllers
 
     public class HomeController : Controller
     {
-        private NewsService _newsService;
-
-        public HomeController(NewsService newsService)
-        {
-            _newsService = newsService;
-        }
-
-        public async Task<IActionResult> Index()
-        {
-            return Ok(await _newsService.GetLastNews(10));
-        }
+        public IActionResult Index() => View();
 
         public IActionResult Error()
         {
