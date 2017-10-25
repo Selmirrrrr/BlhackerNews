@@ -6,15 +6,13 @@
                 <th>Score</th>
                 <th>Title</th>
                 <th>By</th>
-                <th>URL</th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let news of _newsArray">
+            <tr *ngFor="let news of _newsArray" (click)="open(news)">
                 <td>{{news.score}}</td>
                 <td>{{news.title}}</td>
                 <td>{{news.by}}</td>
-                <td><a href="{{news.url}}">Click</a></td>
             </tr>
             </tbody>
         </table>

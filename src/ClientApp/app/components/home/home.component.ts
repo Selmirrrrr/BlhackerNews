@@ -11,18 +11,22 @@ import { INews } from "./../../models/INewsItem";
 export class HomeComponent {
     _newsArray: INews[];
     
-        constructor(private newsService: NewsService) {
-        }
-    
-        getPosts(): void {
-            this.newsService.getPosts()
-                .subscribe(
-                    resultArray => this._newsArray = resultArray,
-                    error => console.log("Error :: " + error)
-                )
-        }
-    
-        ngOnInit(): void {
-            this.getPosts();
-        }
+    constructor(private newsService: NewsService) {
+    }
+
+    getPosts(): void {
+        this.newsService.getPosts()
+            .subscribe(
+                resultArray => this._newsArray = resultArray,
+                error => console.log("Error :: " + error)
+            )
+    }
+
+    ngOnInit(): void {
+        this.getPosts();
+    }
+
+    public open(news:INews) {
+        window.location.href = news.url;
+    }
 }
