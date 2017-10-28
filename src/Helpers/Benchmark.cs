@@ -28,18 +28,6 @@ namespace BlhackerNews.Helpers
         {
             var result = _newsService.GetLastNews().Result.ToList();
         }
-
-        [Benchmark]
-        public void GetLastNews2()
-        {
-            var result = _newsService.GetLastNews2().Result.ToList();
-        }
-
-        [Benchmark]
-        public void GetLastNews3()
-        {
-            var result = _newsService.GetLastNews3().Result.ToList();
-        }
     }
 
     public class FastAndDirtyConfig : ManualConfig
