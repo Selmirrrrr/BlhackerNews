@@ -235,3 +235,6 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 .DS_Store
+src/BenchmarkDotNet.Artifacts/results/Benchmark-report.csv
+src/BenchmarkDotNet.Artifacts/results/Benchmark-report-github.md
+src/BenchmarkDotNet.Artifacts/results/Benchmark-report.html
