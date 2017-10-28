@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { Http, Response } from "@angular/http";
+import { Http, Response, RequestOptions } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/Rx";
-import { INews } from "./../models/INewsItem";
+import { INewsResponse } from "../models/INewsResponse";
 
 @Injectable()
 export class NewsService {
@@ -12,11 +12,17 @@ export class NewsService {
     constructor(private http: Http) {
     }
 
-    getPosts(): Observable<INews[]> {
+    getPosts(pageNumber: number, pageSize: number): Observable<INewsResponse> {
+        let params = new URLSearchParams();
+        params.append('PageNumber', pageNumber.toString());
+        params.append('PageSize', pageSize.toString());
+
+        let options = new RequestOptions({ params: params });
+        
         return this.http
-            .get(this._postsURL)
+            .get(this._postsURL, options)
             .map((response: Response) => {
-                return <INews[]>response.json();
+                return <INewsResponse>response.json();
             })
             .catch(this.handleError);
     }
