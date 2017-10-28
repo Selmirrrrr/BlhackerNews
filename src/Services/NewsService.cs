@@ -9,22 +9,23 @@ namespace BlhackerNews.Services
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using System.Linq;
+    using BenchmarkDotNet.Attributes;
 
     public class NewsService
     {
         private string _topNewsReq = "https://hacker-news.firebaseio.com/v0/topstories.json";
         private string _newsDetailssReq = $"https://hacker-news.firebaseio.com/v0/item/";
 
-        private async Task<List<int>> GetLastNewsIds(int nb) 
+        private async Task<List<int>> GetLastNewsIds(int nb = 10) 
             => JsonConvert.DeserializeObject<List<int>>(await HackerNewsApiRequest(_topNewsReq)).Take(nb).ToList();
 
-        public async Task<List<NewsItem>> GetLastNews(int nb)
+        public async Task<NewsItem[]> GetLastNews(int nb = 10)
         {
             if (nb < 1) throw new ArgumentOutOfRangeException("Nb must be greater than 0");
             if (nb > 500) throw new ArgumentOutOfRangeException("Nb must be lower than 501");
-            var list = await GetLastNewsIds(nb);
-            var tasks = list.Select(GetNewsItemDetails);
-            return Task.WhenAll(tasks).Result.ToList();
+            var list = await GetLastNewsIds(10);
+            var tasks = list.AsParallel().Select(GetNewsItemDetails);
+            return await Task.WhenAll(tasks);
         }
 
         public async Task<NewsItem> GetNewsItemDetails(int newsId) 
