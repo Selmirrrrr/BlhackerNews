@@ -5,6 +5,7 @@ namespace BlhackerNews.Controllers
     using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
+    using BlhackerNews.Models;
     using BlhackerNews.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
@@ -22,18 +23,18 @@ namespace BlhackerNews.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTopNews(string search = null)
+        public async Task<IActionResult> GetTopNews(PagingParams pagingParams)
         {
-            try
-            { 
-                return Ok(await _newsService.GetLastNews(10));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error when getting news.", ex);
-                return new BadRequestResult();
-            }
-        }
+            var model = await _newsService.GetNews(pagingParams);
 
+            Response.Headers.Add("X-Pagination", model.GetHeader().ToJson());
+
+            var outputModel = new NewsOutputModel
+            {
+                Paging = model.GetHeader(),
+                Items = model.List.ToList(),
+            };
+            return Ok(outputModel);
+        }
     }
 }

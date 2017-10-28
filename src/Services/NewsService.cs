@@ -11,6 +11,7 @@ namespace BlhackerNews.Services
     using System.Linq;
     using BenchmarkDotNet.Attributes;
     using Microsoft.Extensions.Caching.Memory;
+    using BlhackerNews.Models;
 
     public class NewsService
     {
@@ -23,8 +24,8 @@ namespace BlhackerNews.Services
             _memoryCache = memoryCache;
         }
 
-        private async Task<List<int>> GetLastNewsIds(int nb = 10) 
-            => JsonConvert.DeserializeObject<List<int>>(await HackerNewsApiRequest(_topNewsReq)).Take(nb).ToList();
+        private async Task<List<long>> GetLastNewsIds(int nb = 10) 
+            => JsonConvert.DeserializeObject<List<long>>(await HackerNewsApiRequest(_topNewsReq)).Take(nb).ToList();
 
         public async Task<NewsItem[]> GetLastNews(int nb = 10)
         {
@@ -35,13 +36,22 @@ namespace BlhackerNews.Services
             return await Task.WhenAll(tasks);
         }
 
-        public async Task<NewsItem> GetNewsItemDetails(int newsId) 
+        public async Task<NewsItem> GetNewsItemDetails(long newsId) 
         {
             return await _memoryCache.GetOrCreateAsync(newsId, async entry =>
             {
                 entry.SlidingExpiration = TimeSpan.FromHours(1);
                 return JsonConvert.DeserializeObject<NewsItem>(await HackerNewsApiRequest(_newsDetailssReq + newsId + ".json"));
             });
+        }
+
+        public async Task<PagedList<NewsItem>> GetNews(PagingParams pagingParams)
+        {
+            var query = await GetLastNewsIds(500);
+            var pagedList =  new PagedList<NewsItem>(query.Select(q => new NewsItem(q)).AsQueryable(), pagingParams.PageNumber, pagingParams.PageSize);
+            var tasks = pagedList.List.AsParallel().Select(i => GetNewsItemDetails(i.Id));
+            pagedList.List = (await Task.WhenAll(tasks)).ToList();
+            return pagedList;
         }
 
         private async Task<string> HackerNewsApiRequest(string request)

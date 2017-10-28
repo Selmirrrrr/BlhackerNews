@@ -1,9 +1,14 @@
-namespace BlhackerNews.Services
+namespace BlhackerNews.Models
 {
     using Newtonsoft.Json;
 
     public class NewsItem 
     {
+        public NewsItem(long id)
+        {
+            Id = id;
+        }
+
         [JsonProperty("kids")]
         public long[] Kids { get; set; }
 
