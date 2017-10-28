@@ -13,14 +13,15 @@ namespace BlhackerNews.Helpers
     using BlhackerNews.Services;
     using BenchmarkDotNet.Configs;
     using BenchmarkDotNet.Jobs;
+    using Microsoft.Extensions.Caching.Memory;
 
     [Config(typeof(FastAndDirtyConfig))]
     public class Benchmark
     {
         private NewsService _newsService;
-        public Benchmark()
+        public Benchmark(NewsService newsService)
         {
-            _newsService = new NewsService();
+            _newsService = newsService;
         }
 
         [Benchmark]

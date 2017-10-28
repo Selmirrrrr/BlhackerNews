@@ -24,6 +24,7 @@ namespace BlhackerNews
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddMemoryCache();
             services.AddTransient<NewsService>();
         }
 
