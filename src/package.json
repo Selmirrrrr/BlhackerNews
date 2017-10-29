@@ -1,7 +1,7 @@
 {
-  "name": "BlhackerNews",
+  "name": "blhackernews",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "test": "karma start ClientApp/test/karma.conf.js"
   },
