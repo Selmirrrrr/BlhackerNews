@@ -18,7 +18,8 @@ init:
 before_build:
   - cmd: cd ./src
   # Install node packages
-  - cmd: npm install
+  - cmd: npm install npm -g
+
 build_script:
   # output will be in ./src/bin/debug/netcoreapp1.1/publish
   - cmd: dotnet publish -c Release -o .\release\
