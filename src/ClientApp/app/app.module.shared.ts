@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 
@@ -15,7 +15,7 @@ import { HomeComponent } from './components/home/home.component';
     ],
     imports: [
         CommonModule,
-        HttpModule,
+        HttpClientModule,
         FormsModule,
         NgxPaginationModule,        
         RouterModule.forRoot([
