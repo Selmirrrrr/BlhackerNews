@@ -9,7 +9,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let news of asyncNews | async | paginate: { id: 'server', itemsPerPage: 10, currentPage: p, totalItems: total }" (click)="open(news)">
+            <tr *ngFor="let news of asyncNews | async" (click)="open(news)">
                 <td>{{news.score}}</td>
                 <td>{{news.title}}</td>
                 <td>{{news.by}}</td>
@@ -17,8 +17,23 @@
             </tbody>
         </table>
     </div>
-    <div class="has-text-centered">
-        <div class="spinner pagination-bar" [ngClass]="{ 'hidden': !loading }"></div>
-        <pagination-controls class="pagination-bar"  (pageChange)="getPage($event)" id="server"></pagination-controls>
+    <div class="row pull-right">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link" aria-label="Previous" (click)="PreviousPage()">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">{{p}}</a></li>
+          <li class="page-item">
+            <a class="page-link" aria-label="Next" (click)="NextPage()">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
 </div>

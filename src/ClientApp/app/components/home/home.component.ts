@@ -6,12 +6,11 @@ import { Observable } from 'rxjs/Observable';
 @Component({
     selector: 'home',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css'],
     providers: [NewsService]
 })
 export class HomeComponent {
-    p: number = 1;
     asyncNews: Observable<INews[]>;
+    p: number = 1;
     total: number;
     loading: boolean;
 
@@ -19,18 +18,29 @@ export class HomeComponent {
     }
 
     getPage(page: number) {
-        this.loading = true;
-        this.asyncNews = this.newsService.getPosts(this.p, 10)
-            .do(res => {
-                this.total = 500;
-                this.p = page;
-                this.loading = false;
-            })
-            .map(res => res.items);
+        this.asyncNews = this.newsService.getPosts(page, 10)
+        .do(res => {
+            this.p = page;
+        })
+        .map(res => res.items)
+        .catch(this.handleError);
+    }
+
+    private handleError(error: Response) {
+        return Observable.throw(error.statusText);
     }
 
     ngOnInit(): void {
-        this.getPage(1);        
+        this.getPage(1);
+    }
+
+
+    public PreviousPage() {
+        this.getPage(this.p > 1 ? --this.p : this.p);
+    }
+
+    public NextPage() {
+        this.getPage(this.p < 50 ? ++this.p : this.p);
     }
 
     public open(news:INews) {

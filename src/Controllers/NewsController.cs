@@ -23,9 +23,9 @@ namespace BlhackerNews.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTopNews(PagingParams pagingParams)
+        public async Task<IActionResult> GetTopNews(int pageNumber = 1, int pageSize = 10)
         {
-            var model = await _newsService.GetNews(pagingParams);
+            var model = await _newsService.GetNews(new PagingParams(pageNumber, pageSize));
 
             Response.Headers.Add("X-Pagination", model.GetHeader().ToJson());
 

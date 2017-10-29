@@ -2,26 +2,26 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import "rxjs/Rx";
 import { INewsResponse } from "../models/INewsResponse";
+import { HttpParams, HttpClient, HttpResponse } from "@angular/common/http";
 
 @Injectable()
 export class NewsService {
 
     private _postsURL = "/api/news";
 
-    constructor(private http: Http) {
+    constructor(private http: HttpClient) {
     }
 
     getPosts(pageNumber: number, pageSize: number): Observable<INewsResponse> {
-        let params = new URLSearchParams();
-        params.append('PageNumber', pageNumber.toString());
-        params.append('PageSize', pageSize.toString());
+        console.log(pageNumber);
+        let params = new HttpParams();
+        params = params.set('pageNumber', pageNumber.toString());
+        params = params.set('pageSize', pageSize.toString());
 
-        let options = new RequestOptions({ params: params });
-        
         return this.http
-            .get(this._postsURL, options)
-            .map((response: Response) => {
-                return <INewsResponse>response.json();
+            .get(this._postsURL, {params: params})
+            .map((response: HttpResponse<INewsResponse>) => {
+                return response;
             })
             .catch(this.handleError);
     }

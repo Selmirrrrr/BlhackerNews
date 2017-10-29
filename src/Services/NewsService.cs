@@ -49,7 +49,7 @@ namespace BlhackerNews.Services
         {
             var query = await GetLastNewsIds(500);
             var pagedList =  new PagedList<NewsItem>(query.Select(q => new NewsItem(q)).AsQueryable(), pagingParams.PageNumber, pagingParams.PageSize);
-            var tasks = pagedList.List.AsParallel().Select(i => GetNewsItemDetails(i.Id));
+            var tasks = pagedList.List.Select(i => GetNewsItemDetails(i.Id));
             pagedList.List = (await Task.WhenAll(tasks)).ToList();
             return pagedList;
         }
