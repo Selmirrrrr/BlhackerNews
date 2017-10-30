@@ -18,6 +18,7 @@ init:
 before_build:
   - cmd: cd ./src
   # Install node packages
+  - cmd: npm install npm -g
   - cmd: npm install
 build_script:
   # output will be in ./src/bin/debug/netcoreapp1.1/publish
