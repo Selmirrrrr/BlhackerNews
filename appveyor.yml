@@ -8,7 +8,6 @@ branches:
   only:
   - master
 install:
-  # Get the latest stable version of Node 0.STABLE.latest
   - ps: Install-Product node $env:nodejs_version
   - IF %nodejs_version% LSS 4 npm -g install npm@2
   - set PATH=%APPDATA%\npm;%PATH%
@@ -17,14 +16,10 @@ init:
   - cmd: git config --global core.autocrlf true
 before_build:
   - cmd: cd ./src
-  # Install node packages
   - cmd: npm install npm -g
   - cmd: npm install
 build_script:
-  # output will be in ./src/bin/debug/netcoreapp1.1/publish
   - cmd: dotnet publish -c Release -o .\release\
-after_build:
-  # For once the build has completed
 artifacts:
  - path: 'src\release\'
    name: WebSite
