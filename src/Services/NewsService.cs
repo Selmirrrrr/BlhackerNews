@@ -24,10 +24,10 @@ namespace BlhackerNews.Services
             _memoryCache = memoryCache;
         }
 
-        private async Task<List<long>> GetLastNewsIds(int nb = 10) 
+        private async Task<List<long>> GetLastNewsIds(int nb = 500) 
             => JsonConvert.DeserializeObject<List<long>>(await HackerNewsApiRequest(_topNewsReq)).Take(nb).ToList();
 
-        public async Task<NewsItem[]> GetLastNews(int nb = 10)
+        public async Task<NewsItem[]> GetLastNews(int nb = 500)
         {
             if (nb < 1) throw new ArgumentOutOfRangeException("Nb must be greater than 0");
             if (nb > 500) throw new ArgumentOutOfRangeException("Nb must be lower than 501");
